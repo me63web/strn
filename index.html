@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIWI · Advance Tax Invoice · September 2026</title>
+    <title>KIWI · Advance Tax Invoice · July 2026</title>
     <style>
         * {
             margin: 0;
@@ -743,340 +743,140 @@
 
     <script>
         // ============================================================
-        // 🔥 YOUR EXISTING GOOGLE SHEET WEB APP URL - DON'T CHANGE
+        // GOOGLE SHEET SYNC  —  PASTE YOUR WEB APP URL HERE
+        // You get this URL after deploying the Apps Script (see the
+        // step-by-step guide). It looks like:
+        // https://script.google.com/macros/s/AKfycb.../exec
         // ============================================================
-        var SHEET_API_URL = "https://script.google.com/macros/s/AKfycbx3tFvVhGqG6LxRqxY7zJQzLxhNc9WqHhjB/exec";
+        var SHEET_API_URL = "https://script.google.com/macros/s/AKfycby2dzolI3UbYYtBWCFnjjnt4NwKwfbqmQ2y5ASKOy7MNsP53vMT87AFEdj2i5f_PF0/exec";
 
-        // ============================================================
-        // LOGIN CREDENTIALS
-        // ============================================================
-        var ADMIN_USER = "admin";
-        var ADMIN_PASS = "admin123";
-        var USER_USER = "user";
-        var USER_PASS = "user123";
-
-        // ============================================================
-        // STORAGE KEYS
-        // ============================================================
-        var STORAGE_KEY = 'kiwi_tax_invoice_sep_2026';
-        var PARTY_STORAGE_KEY = 'kiwi_party_database_sep_2026';
-        var LOGIN_STORAGE_KEY = 'kiwi_tax_invoice_login_sep_2026';
-
-        // ============================================================
-        // 🔥 COMPLETE PARTY DATABASE (42 Parties)
-        // ============================================================
-        var partyDatabase = {
-            '22034': { name: 'IDEAL SUPER MALL BOSAN ROAD', ntrn: '5527785-3', strn: '327787619200-4' },
-            '22038': { name: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5' },
-            '22033': { name: 'IDEAL MALL CHUNGI#6', ntrn: '7582544-8', strn: '327787614826-4' },
-            '23129': { name: 'FRESHCO SWEETS & BAKERS BOSAN ROAD', ntrn: '', strn: '' },
-            '22369': { name: 'TREND STORE GULGASHT', ntrn: '1309897-7', strn: '40013098971-9' },
-            '22110': { name: 'FIYAZ MART BOSAN ROAD', ntrn: '1749512-1', strn: '327787618368-2' },
-            '22056': { name: 'KK MART BOSAN ROAD', ntrn: '7197572-2', strn: '327787616144-3' },
-            '22137': { name: 'KK MART HUSSAIN AGHAI', ntrn: '7197572-2', strn: '327787616144-3' },
-            '23285': { name: 'AL RAFFAY HYPER MART GULSHAN M', ntrn: '4648779', strn: '4648779-00' },
-            '23697': { name: 'FOOD FESTIVAL KHANEWAL ROAD', ntrn: '1480015-2', strn: '327787624146-8' },
-            '22602': { name: 'D MARINA BOSAN ROAD', ntrn: '9385097-5', strn: '938509-7' },
-            '22049': { name: 'PRINCE D/S CANTT', ntrn: '', strn: '' },
-            '22154': { name: 'PERFUME PALACE CANTT', ntrn: '0122268-6', strn: '363027610587-3' },
-            '22036': { name: 'BAKHT MART MODEL TOWN', ntrn: '5124957-6', strn: '3277876172314' },
-            '22954': { name: 'BEST ONE STORE BUCH VILLAS', ntrn: 'D188987-5', strn: 'D188987' },
-            '22031': { name: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '3630206374537' },
-            '22188': { name: 'BEHRIA S/S QASIM BELA', ntrn: '3630279332553', strn: '79332553' },
-            '22341': { name: 'TESCO MART TANK CHOWK', ntrn: '1826721-1', strn: '36302-2906795-0' },
-            '22032': { name: 'GIFT POINT SHAREEF PALAZA', ntrn: '', strn: '' },
-            '24931': { name: 'ALL IN SUPER MART MPS CHOWK', ntrn: '', strn: '' },
-            '22368': { name: 'GHAFOOR ARMY CANTT', ntrn: '4342726-0', strn: '400434272612' },
-            '25466': { name: 'IDEAL MAGA MART MODEL TOWN', ntrn: '', strn: '' },
-            '25470': { name: 'AL NOOR MART QASIM BILLA', ntrn: '', strn: '' },
-            '25767': { name: 'GALAXY CLINIC MART BOSAN ROAD', ntrn: '0150979-9', strn: '3277876193881' },
-            '25952': { name: 'AUOR SUPER MARKET SP CHOWK', ntrn: '8353462-4', strn: '8353462' },
-            '23809': { name: 'MULTAN BACHAT BAZAR BAGH HUSSAIN CHOWK', ntrn: '', strn: '36302-1809429-3' }
-        };
-
-        // ============================================================
-        // 🔥 COMPLETE INITIAL DATA (42 Invoices)
-        // ============================================================
-        var initialData = [
-            { partyId: '22034', party: 'IDEAL SUPER MALL BOSAN ROAD', ntrn: '5527785-3', strn: '327787619200-4', inv: '125174', date: '2026-09-01', tax: 290, ex: 49425.18, sale: 57935 },
-            { partyId: '22038', party: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5', inv: '124684', date: '2026-09-02', tax: 2468, ex: 451927.3, sale: 493688 },
-            { partyId: '22038', party: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5', inv: '124735', date: '2026-09-03', tax: 280, ex: 5133.6, sale: 56047 },
-            { partyId: '22038', party: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5', inv: '125206', date: '2026-09-04', tax: 2103, ex: 389083.3, sale: 420539 },
-            { partyId: '22033', party: 'IDEAL MALL CHUNGI#6', ntrn: '7582544-8', strn: '327787614826-4', inv: '124923', date: '2026-09-05', tax: 254, ex: 45009.69, sale: 50833 },
-            { partyId: '23129', party: 'FRESHCO SWEETS & BAKERS BOSAN ROAD', ntrn: '', strn: '', inv: '125123', date: '2026-09-06', tax: 108, ex: 19950.08, sale: 21677 },
-            { partyId: '22369', party: 'TREND STORE GULGASHT', ntrn: '1309897-7', strn: '40013098971-9', inv: '124734', date: '2026-09-07', tax: 633, ex: 108200.1, sale: 126591 },
-            { partyId: '22110', party: 'FIYAZ MART BOSAN ROAD', ntrn: '1749512-1', strn: '327787618368-2', inv: '124924', date: '2026-09-08', tax: 93, ex: 15981.18, sale: 18549 },
-            { partyId: '22056', party: 'KK MART BOSAN ROAD', ntrn: '7197572-2', strn: '327787616144-3', inv: '124644', date: '2026-09-09', tax: 871, ex: 154341.3, sale: 174265 },
-            { partyId: '22056', party: 'KK MART BOSAN ROAD', ntrn: '7197572-2', strn: '327787616144-3', inv: '124926', date: '2026-09-10', tax: 94, ex: 16418.82, sale: 18803 },
-            { partyId: '22137', party: 'KK MART HUSSAIN AGHAI', ntrn: '7197572-2', strn: '327787616144-3', inv: '125107', date: '2026-09-11', tax: 488, ex: 86605.32, sale: 97506 },
-            { partyId: '23285', party: 'AL RAFFAY HYPER MART GULSHAN M', ntrn: '4648779', strn: '4648779-00', inv: '125205', date: '2026-09-12', tax: 263, ex: 48333.89, sale: 52581 },
-            { partyId: '23697', party: 'FOOD FESTIVAL KHANEWAL ROAD', ntrn: '1480015-2', strn: '327787624146-8', inv: '124708', date: '2026-09-13', tax: 262, ex: 44662.05, sale: 52314 },
-            { partyId: '22602', party: 'D MARINA BOSAN ROAD', ntrn: '9385097-5', strn: '938509-7', inv: '125088', date: '2026-09-14', tax: 144, ex: 25474.89, sale: 28854 },
-            { partyId: '22049', party: 'PRINCE D/S CANTT', ntrn: '', strn: '', inv: '125194', date: '2026-09-15', tax: 243, ex: 42227.76, sale: 48691 },
-            { partyId: '22154', party: 'PERFUME PALACE CANTT', ntrn: '0122268-6', strn: '363027610587-3', inv: '124953', date: '2026-09-16', tax: 204, ex: 35221.02, sale: 40770 },
-            { partyId: '22036', party: 'BAKHT MART MODEL TOWN', ntrn: '5124957-6', strn: '3277876172314', inv: '125067', date: '2026-09-17', tax: 547, ex: 94665.92, sale: 109365 },
-            { partyId: '22954', party: 'BEST ONE STORE BUCH VILLAS', ntrn: 'D188987-5', strn: 'D188987', inv: '125054', date: '2026-09-18', tax: 19, ex: 3233.46, sale: 3809 },
-            { partyId: '22031', party: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '3630206374537', inv: '124649', date: '2026-09-19', tax: 294, ex: 51272.25, sale: 58898 },
-            { partyId: '22031', party: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '3630206374537', inv: '124731', date: '2026-09-20', tax: 46, ex: 7986.69, sale: 9152 },
-            { partyId: '22031', party: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '', inv: '125090', date: '2026-09-21', tax: 25, ex: 4680.27, sale: 5093 },
-            { partyId: '22188', party: 'BEHRIA S/S QASIM BELA', ntrn: '3630279332553', strn: '79332553', inv: '125089', date: '2026-09-22', tax: 340, ex: 58547.12, sale: 68041 },
-            { partyId: '', party: '4 EVER BAKERS TARIQ ROAD', ntrn: '3525569-2', strn: '36304671934', inv: '124789', date: '2026-09-23', tax: 97, ex: 16773.24, sale: 19453 },
-            { partyId: '22341', party: 'TESCO MART TANK CHOWK', ntrn: '1826721-1', strn: '36302-2906795-0', inv: '124791', date: '2026-09-24', tax: 43, ex: 7441.85, sale: 8685 },
-            { partyId: '', party: 'SHAH RUKN-E-ALAM', ntrn: '230123-2', strn: '3630270276253', inv: '124983', date: '2026-09-25', tax: 150, ex: 27260.4, sale: 30059 },
-            { partyId: '', party: '711 DHA', ntrn: '4729545-0', strn: '32402-9637719-3', inv: '12068', date: '2026-09-26', tax: 178, ex: 30943.6, sale: 35606 },
-            { partyId: '22032', party: 'GIFT POINT SHAREEF PALAZA', ntrn: '', strn: '', inv: '124787', date: '2026-09-27', tax: 100, ex: 17070.9, sale: 20052 },
-            { partyId: '24931', party: 'ALL IN SUPER MART MPS CHOWK', ntrn: '', strn: '', inv: '124709', date: '2026-09-28', tax: 76, ex: 13025.25, sale: 15226 },
-            { partyId: '22368', party: 'GHAFOOR ARMY CANTT', ntrn: '4342726-0', strn: '400434272612', inv: '124646', date: '2026-09-29', tax: 47, ex: 8097.12, sale: 9483 },
-            { partyId: '25466', party: 'IDEAL MAGA MART MODEL TOWN', ntrn: '', strn: '', inv: '124922', date: '2026-09-30', tax: 152, ex: 26947.2, sale: 30479 },
-            { partyId: '25470', party: 'AL NOOR MART QASIM BILLA', ntrn: '', strn: '', inv: '124637', date: '2026-09-01', tax: 10, ex: 1773.08, sale: 2093 },
-            { partyId: '25470', party: 'AL NOOR MART QASIM BILLA', ntrn: '', strn: '', inv: '125070', date: '2026-09-02', tax: 18, ex: 3099.14, sale: 3583 },
-            { partyId: '25767', party: 'GALAXY CLINIC MART BOSAN ROAD', ntrn: '0150979-9', strn: '3277876193881', inv: '124737', date: '2026-09-03', tax: 10, ex: 1647.48, sale: 1928 },
-            { partyId: '', party: 'COSMETIC', ntrn: '1730513-6', strn: '363029277068-1', inv: '125052', date: '2026-09-04', tax: 12, ex: 1976.85, sale: 2386 },
-            { partyId: '25952', party: 'AUOR SUPER MARKET SP CHOWK', ntrn: '8353462-4', strn: '8353462', inv: '125172', date: '2026-09-05', tax: 1158, ex: 210695, sale: 231572 },
-            { partyId: '', party: 'SUPER SWEET', ntrn: '0911371-4', strn: '911371', inv: '125139', date: '2026-09-06', tax: 22, ex: 3650.68, sale: 4345 },
-            { partyId: '', party: 'GOLOO MART', ntrn: '', strn: '32102-4067623-7', inv: '124718', date: '2026-09-07', tax: 5, ex: 874.8, sale: 1036 },
-            { partyId: '', party: 'GOLOO MART', ntrn: '', strn: '32102-4067623-7', inv: '125247', date: '2026-09-08', tax: 3, ex: 483.84, sale: 572 },
-            { partyId: '', party: 'SHELL SELECT M3', ntrn: '8328602-3', strn: '', inv: '124830', date: '2026-09-09', tax: 5, ex: 874.8, sale: 1010 },
-            { partyId: '', party: 'SHELL SELECT M3', ntrn: '8328602-3', strn: '', inv: '124837', date: '2026-09-10', tax: 24, ex: 4133.3, sale: 4771 },
-            { partyId: '23809', party: 'MULTAN BACHAT BAZAR BAGH HUSSAIN CHOWK', ntrn: '', strn: '36302-1809429-3', inv: '125106', date: '2026-09-11', tax: 31, ex: 5347.78, sale: 6172 },
-            { partyId: '', party: 'DREAM MART', ntrn: '', strn: '36302-1872442-1', inv: '125192', date: '2026-09-12', tax: 101, ex: 16980.3, sale: 20139 }
-        ];
-
-        // ============================================================
-        // STATE
-        // ============================================================
-        var fullData = [];
-        var isAdmin = false;
-        var localFileHandle = null;
-
-        // ============================================================
-        // UTILITY FUNCTIONS
-        // ============================================================
-        function loadSavedData() {
-            try {
-                var saved = localStorage.getItem(STORAGE_KEY);
-                if (saved) {
-                    var parsed = JSON.parse(saved);
-                    if (Array.isArray(parsed) && parsed.length > 0) {
-                        return parsed;
-                    }
-                }
-            } catch (e) { /* ignore */ }
-            // Return COMPLETE initial data with all 42 invoices
-            return JSON.parse(JSON.stringify(initialData));
+        function sheetConfigured() {
+            return SHEET_API_URL && SHEET_API_URL.indexOf('PASTE_YOUR') !== 0;
         }
 
-        function saveData() {
-            try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(fullData));
-                localStorage.setItem(PARTY_STORAGE_KEY, JSON.stringify(partyDatabase));
-                saveToSheet();
-                writeToLocalFile();
-                return true;
-            } catch (e) {
-                console.error('Save failed:', e);
-                return false;
-            }
-        }
-
-        function formatNumber(n) {
-            return Math.round(n).toLocaleString();
-        }
-
-        function formatCurrency(n) {
-            return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
-        function updateFileSyncStatus(connected, label) {
-            var bar = document.getElementById('fileSyncStatus');
-            var text = document.getElementById('fileSyncText');
-            if (!bar || !text) return;
-
-            if (connected) {
-                bar.className = 'file-sync-status connected';
-                text.textContent = label || '✅ Data is synced to Google Sheet.';
-            } else {
-                bar.className = 'file-sync-status';
-                text.textContent = label || '⚠️ Not connected to Google Sheet. Check your Web App URL.';
-            }
-        }
-
-        // ============================================================
-        // GOOGLE SHEET SYNC FUNCTIONS - DON'T CHANGE
-        // ============================================================
+        // Pulls the latest data from the Google Sheet. Called on page load,
+        // and again every 15 seconds so changes made on OTHER devices show
+        // up here too (Google Sheets can't "push" updates like Firebase can,
+        // so this checks in periodically instead).
         function loadFromSheet(showErrors) {
-            if (!SHEET_API_URL || SHEET_API_URL.length === 0) {
-                updateFileSyncStatus(false, '⚠️ Please set SHEET_API_URL with your Google Apps Script Web App URL.');
+            if (!sheetConfigured()) {
+                updateFileSyncStatus(false, '⚠️ Paste your Google Sheet Web App URL into SHEET_API_URL near the top of the script to enable cloud sync.');
                 return;
             }
+            fetch(SHEET_API_URL)
+                .then(function (res) { return res.json(); })
+                .then(function (data) {
+                    var cloudHasInvoices = Array.isArray(data.invoices) && data.invoices.length > 0;
+                    var cloudHasParties = data.parties && typeof data.parties === 'object' && Object.keys(data.parties).length > 0;
 
-            fetch(SHEET_API_URL + '?t=' + Date.now())
-                .then(function(res) {
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return res.json();
-                })
-                .then(function(data) {
-                    if (data && Array.isArray(data.invoices) && data.invoices.length > 0) {
+                    if (cloudHasInvoices) {
+                        // Cloud already has real data — that's the source of truth.
                         fullData = data.invoices;
+                    }
+                    if (cloudHasParties) {
+                        // Merge cloud parties on top of the built-in 42, so nothing is lost either way.
+                        Object.keys(data.parties).forEach(function (id) {
+                            if (id) partyDatabase[id] = data.parties[id];
+                        });
+                    }
+
+                    try {
                         localStorage.setItem(STORAGE_KEY, JSON.stringify(fullData));
-                        updateFileSyncStatus(true, '✅ Loaded ' + fullData.length + ' invoices from Google Sheet');
-                        var container = document.getElementById('mainContainer');
-                        if (container && container.className.indexOf('hidden') === -1) {
-                            applyFilters();
-                        }
-                    } else {
-                        // No data in sheet, use local data (42 invoices)
-                        fullData = loadSavedData();
-                        updateFileSyncStatus(false, '📋 No data in Google Sheet. Using local data (' + fullData.length + ' invoices).');
-                        var container = document.getElementById('mainContainer');
-                        if (container && container.className.indexOf('hidden') === -1) {
-                            applyFilters();
-                        }
+                        localStorage.setItem(PARTY_STORAGE_KEY, JSON.stringify(partyDatabase));
+                    } catch (e) { /* localStorage is just a fast local cache here */ }
+
+                    updateFileSyncStatus(true, '📊 Synced to Google Sheet');
+
+                    // If the Sheet came back empty, push our built-in / local data
+                    // UP to it once, so it's seeded and stays in sync from now on.
+                    if (!cloudHasInvoices && fullData.length > 0) {
+                        saveToSheet();
                     }
-                })
-                .catch(function(err) {
-                    console.error('Load from sheet failed:', err);
-                    if (showErrors) {
-                        updateFileSyncStatus(false, '⚠️ Could not reach Google Sheet. Check your Web App URL.');
-                    }
-                    // Use local data as fallback
-                    fullData = loadSavedData();
+
                     var container = document.getElementById('mainContainer');
                     if (container && container.className.indexOf('hidden') === -1) {
                         applyFilters();
                     }
+                })
+                .catch(function (err) {
+                    console.error('Google Sheet load failed:', err);
+                    if (showErrors) {
+                        updateFileSyncStatus(false, '⚠️ Could not reach Google Sheet — check the Web App URL and that it is deployed with access "Anyone".');
+                    }
                 });
         }
 
+        // Pushes the CURRENT full data set to the Google Sheet, replacing
+        // whatever was there before (simplest way to keep it always correct).
         function saveToSheet() {
-            if (!SHEET_API_URL || SHEET_API_URL.length === 0) return;
-
+            if (!sheetConfigured()) return;
             fetch(SHEET_API_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                    body: JSON.stringify({ invoices: fullData, parties: partyDatabase })
+                method: 'POST',
+                // text/plain avoids a CORS "preflight" request that Apps
+                // Script web apps don't handle — this is the standard trick.
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ invoices: fullData, parties: partyDatabase })
+            })
+                .then(function () {
+                    updateFileSyncStatus(true, '📊 Synced to Google Sheet');
                 })
-                .then(function(res) {
-                    if (!res.ok) throw new Error('HTTP ' + res.status);
-                    return res.text();
-                })
-                .then(function() {
-                    updateFileSyncStatus(true, '✅ Synced ' + fullData.length + ' invoices to Google Sheet');
-                })
-                .catch(function(err) {
-                    console.error('Save to sheet failed:', err);
-                    updateFileSyncStatus(false, '⚠️ Failed to save to Google Sheet.');
+                .catch(function (err) {
+                    console.error('Google Sheet save failed:', err);
+                    updateFileSyncStatus(false, '⚠️ Save to Google Sheet failed — check your internet connection.');
                 });
         }
 
         // ============================================================
-        // LOCAL FILE SYNC
+        // LOGIN SYSTEM
         // ============================================================
-        function fileSyncSupported() {
-            return typeof window.showSaveFilePicker === 'function';
-        }
 
-        async function connectLocalFile() {
-            if (!fileSyncSupported()) {
-                alert('⚠️ Your browser does not support direct file saving. Use Chrome or Edge for this feature.');
+        document.getElementById('adminLoginBtn').onclick = function() {
+            loginUser('admin');
+        };
+
+        document.getElementById('userLoginBtn').onclick = function() {
+            loginUser('user');
+        };
+
+        document.getElementById('loginPass').onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                attemptLogin();
+            }
+        };
+
+        document.getElementById('loginUser').onkeydown = function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('loginPass').focus();
+            }
+        };
+
+        // Pressing Enter (instead of clicking a specific Admin/User button)
+        // now checks the typed credentials against BOTH roles automatically,
+        // so the login form works correctly no matter how it's submitted.
+        function attemptLogin() {
+            var username = document.getElementById('loginUser').value.trim();
+            var password = document.getElementById('loginPass').value.trim();
+            var errorEl = document.getElementById('loginError');
+
+            errorEl.textContent = '';
+
+            if (!username || !password) {
+                errorEl.textContent = '⚠️ Please enter both username and password.';
                 return;
             }
-            try {
-                localFileHandle = await window.showSaveFilePicker({
-                    suggestedName: 'kiwi_tax_invoice_backup.json',
-                    types: [{ description: 'JSON File', accept: { 'application/json': ['.json'] } }]
-                });
-                var perm = await localFileHandle.requestPermission({ mode: 'readwrite' });
-                if (perm !== 'granted') {
-                    alert('⚠️ Permission not granted.');
-                    localFileHandle = null;
-                    return;
-                }
-                await writeToLocalFile();
-                updateFileSyncStatus(true, '✅ Connected to local file: ' + localFileHandle.name);
-            } catch (e) {
-                if (e && e.name !== 'AbortError') {
-                    console.error('File connection failed:', e);
-                    alert('⚠️ Could not connect to local file.');
-                }
-            }
-        }
 
-        async function writeToLocalFile() {
-            if (!localFileHandle) return;
-            try {
-                var payload = {
-                    savedAt: new Date().toISOString(),
-                    invoices: fullData,
-                    parties: partyDatabase
-                };
-                var writable = await localFileHandle.createWritable();
-                await writable.write(JSON.stringify(payload, null, 2));
-                await writable.close();
-            } catch (e) {
-                console.error('Write to local file failed:', e);
-                localFileHandle = null;
-                updateFileSyncStatus(false, '⚠️ Lost access to local file.');
-            }
-        }
-
-        function downloadBackup() {
-            var payload = {
-                savedAt: new Date().toISOString(),
-                invoices: fullData,
-                parties: partyDatabase
-            };
-            var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            var stamp = new Date().toISOString().slice(0, 10);
-            a.href = url;
-            a.download = 'kiwi_tax_invoice_backup_' + stamp + '.json';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
-        }
-
-        // ============================================================
-        // LOGIN FUNCTIONS
-        // ============================================================
-        function saveLoginSession(role) {
-            try {
-                localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify({ role: role, savedAt: Date.now() }));
-            } catch (e) { /* ignore */ }
-        }
-
-        function getLoginSession() {
-            try {
-                var saved = localStorage.getItem(LOGIN_STORAGE_KEY);
-                if (!saved) return null;
-                var session = JSON.parse(saved);
-                if (session && (session.role === 'admin' || session.role === 'user')) return session.role;
-            } catch (e) { /* ignore */ }
-            return null;
-        }
-
-        function clearLoginSession() {
-            try {
-                localStorage.removeItem(LOGIN_STORAGE_KEY);
-            } catch (e) { /* ignore */ }
-        }
-
-        function doLogout() {
-            if (confirm('Logout?')) {
-                clearLoginSession();
-                document.getElementById('mainContainer').className = 'container hidden';
-                document.getElementById('loginOverlay').className = 'login-overlay';
-                document.getElementById('loginUser').value = '';
+            if (username === 'admin' && password === 'admin123') {
+                loginUser('admin');
+            } else if (username === 'user' && password === 'user123') {
+                loginUser('user');
+            } else {
+                errorEl.textContent = '❌ Invalid username or password.';
                 document.getElementById('loginPass').value = '';
-                document.getElementById('loginError').textContent = '';
-                document.getElementById('appContent').innerHTML = '';
-                document.getElementById('loginUser').focus();
+                document.getElementById('loginPass').focus();
             }
         }
 
-        function attemptLogin(role) {
+        function loginUser(role) {
             var username = document.getElementById('loginUser').value.trim();
             var password = document.getElementById('loginPass').value.trim();
             var errorEl = document.getElementById('loginError');
@@ -1089,7 +889,7 @@
             }
 
             if (role === 'admin') {
-                if (username === ADMIN_USER && password === ADMIN_PASS) {
+                if (username === 'admin' && password === 'admin123') {
                     errorEl.textContent = '';
                     saveLoginSession('admin');
                     showApp('admin');
@@ -1099,7 +899,7 @@
                     document.getElementById('loginPass').focus();
                 }
             } else if (role === 'user') {
-                if (username === USER_USER && password === USER_PASS) {
+                if (username === 'user' && password === 'user123') {
                     errorEl.textContent = '';
                     saveLoginSession('user');
                     showApp('user');
@@ -1111,22 +911,52 @@
             }
         }
 
-        // ============================================================
-        // BUILD APP HTML
-        // ============================================================
-        function buildAppHTML(admin) {
-            var roleBadge = admin ? '👑 Admin' : '👤 User';
-            var roleClass = admin ? '' : 'user';
-            var noticeClass = admin ? '' : 'visible';
-            var resetDisplay = admin ? 'inline-flex' : 'none';
-            var readOnlyAttr = admin ? '' : 'readonly';
-            var readOnlyClass = admin ? '' : 'readonly-field';
+        function showApp(role) {
+            document.getElementById('loginOverlay').className = 'login-overlay hidden';
+            document.getElementById('mainContainer').className = 'container';
+
+            // Always pull the latest saved data at the moment of login.
+            // Without this, a tab that's been open for a while (or a
+            // second tab/window) keeps whatever it loaded originally in
+            // memory, even after another login elsewhere has since saved
+            // newer entries to storage — making "missing" data appear.
+            refreshDataFromStorage();
+
+            var isAdmin = (role === 'admin');
+            var appHtml = buildAppHTML(isAdmin);
+            document.getElementById('appContent').innerHTML = appHtml;
+
+            initApp(isAdmin);
+        }
+
+        function refreshDataFromStorage() {
+            fullData = loadSavedData();
+
+            try {
+                var savedParties = JSON.parse(localStorage.getItem(PARTY_STORAGE_KEY) || '{}');
+                if (savedParties && typeof savedParties === 'object') {
+                    Object.keys(savedParties).forEach(function(id) {
+                        if (id) partyDatabase[id] = savedParties[id];
+                    });
+                }
+            } catch (e) {
+                console.warn('Party database could not be refreshed:', e);
+            }
+        }
+
+        function buildAppHTML(isAdmin) {
+            var roleBadge = isAdmin ? '👑 Admin' : '👤 User';
+            var roleClass = isAdmin ? '' : 'user';
+            var noticeClass = isAdmin ? '' : 'visible';
+            var resetDisplay = isAdmin ? 'inline-flex' : 'none';
+            var readOnlyAttr = isAdmin ? '' : 'readonly';
+            var readOnlyClass = isAdmin ? '' : 'readonly-field';
 
             return `
                 <div class="report-header">
                     <h1>🍯 KIWI · ADVANCE TAX INVOICE</h1>
                     <div class="header-actions">
-                        <span class="month-badge" id="monthBadge">📅 SEPTEMBER 2026</span>
+                        <span class="month-badge" id="monthBadge">📅 JULY 2026</span>
                         <span class="user-role-badge ${roleClass}">${roleBadge}</span>
                         <button class="btn" id="connectFileBtn">💾 Connect Local File</button>
                         <button class="btn" id="downloadBackupBtn">⬇️ Download Backup</button>
@@ -1137,7 +967,7 @@
 
                 <div class="file-sync-status" id="fileSyncStatus">
                     <span class="dot"></span>
-                    <span id="fileSyncText">Loading data from Google Sheet...</span>
+                    <span id="fileSyncText">Not connected — data is saving to this browser only (localStorage).</span>
                 </div>
 
                 <div class="user-restriction-notice ${noticeClass}" id="userNotice">
@@ -1237,8 +1067,8 @@
                 </div>
 
                 <div class="footer-note">
-                    <span>📌 Non‑zero entries · <span id="footerMonthLabel">September 2026</span></span>
-                    <span>⏱️ report generated · <span id="reportGeneratedDate">23 Sep 2026</span></span>
+                    <span>📌 Non‑zero entries · <span id="footerMonthLabel">July 2026</span></span>
+                    <span>⏱️ report generated · <span id="reportGeneratedDate">23 Aug 2026</span></span>
                 </div>
                 <div class="footer-credits">
                     <span>Report generated by: Hammad Sales Agency Multan</span>
@@ -1248,32 +1078,330 @@
         }
 
         // ============================================================
-        // SHOW APP
+        // ALL 42 PARTIES DATA
         // ============================================================
-        function showApp(role) {
-            document.getElementById('loginOverlay').className = 'login-overlay hidden';
-            document.getElementById('mainContainer').className = 'container';
 
-            fullData = loadSavedData();
-            isAdmin = (role === 'admin');
-            var appHtml = buildAppHTML(isAdmin);
-            document.getElementById('appContent').innerHTML = appHtml;
+        var partyDatabase = {
+            '22034': { name: 'IDEAL SUPER MALL BOSAN ROAD', ntrn: '5527785-3', strn: '327787619200-4' },
+            '22038': { name: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5' },
+            '22033': { name: 'IDEAL MALL CHUNGI#6', ntrn: '7582544-8', strn: '327787614826-4' },
+            '23129': { name: 'FRESHCO SWEETS & BAKERS BOSAN ROAD', ntrn: '', strn: '' },
+            '22369': { name: 'TREND STORE GULGASHT', ntrn: '1309897-7', strn: '40013098971-9' },
+            '22110': { name: 'FIYAZ MART BOSAN ROAD', ntrn: '1749512-1', strn: '327787618368-2' },
+            '22056': { name: 'KK MART BOSAN ROAD', ntrn: '7197572-2', strn: '327787616144-3' },
+            '22137': { name: 'KK MART HUSSAIN AGHAI', ntrn: '7197572-2', strn: '327787616144-3' },
+            '23285': { name: 'AL RAFFAY HYPER MART GULSHAN M', ntrn: '4648779', strn: '4648779-00' },
+            '23697': { name: 'FOOD FESTIVAL KHANEWAL ROAD', ntrn: '1480015-2', strn: '327787624146-8' },
+            '22602': { name: 'D MARINA BOSAN ROAD', ntrn: '9385097-5', strn: '938509-7' },
+            '22049': { name: 'PRINCE D/S CANTT', ntrn: '', strn: '' },
+            '22154': { name: 'PERFUME PALACE CANTT', ntrn: '0122268-6', strn: '363027610587-3' },
+            '22036': { name: 'BAKHT MART MODEL TOWN', ntrn: '5124957-6', strn: '3277876172314' },
+            '22954': { name: 'BEST ONE STORE BUCH VILLAS', ntrn: 'D188987-5', strn: 'D188987' },
+            '22031': { name: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '3630206374537' },
+            '22188': { name: 'BEHRIA S/S QASIM BELA', ntrn: '3630279332553', strn: '79332553' },
+            '22341': { name: 'TESCO MART TANK CHOWK', ntrn: '1826721-1', strn: '36302-2906795-0' },
+            '22032': { name: 'GIFT POINT SHAREEF PALAZA', ntrn: '', strn: '' },
+            '24931': { name: 'ALL IN SUPER MART MPS CHOWK', ntrn: '', strn: '' },
+            '22368': { name: 'GHAFOOR ARMY CANTT', ntrn: '4342726-0', strn: '400434272612' },
+            '25466': { name: 'IDEAL MAGA MART MODEL TOWN', ntrn: '', strn: '' },
+            '25470': { name: 'AL NOOR MART QASIM BILLA', ntrn: '', strn: '' },
+            '25767': { name: 'GALAXY CLINIC MART BOSAN ROAD', ntrn: '0150979-9', strn: '3277876193881' },
+            '25952': { name: 'AUOR SUPER MARKET SP CHOWK', ntrn: '8353462-4', strn: '8353462' },
+            '23809': { name: 'MULTAN BACHAT BAZAR BAGH HUSSAIN CHOWK', ntrn: '', strn: '36302-1809429-3' },
+            // Additional parties that were in original code but not in database
+            '': { name: '4 EVER BAKERS TARIQ ROAD', ntrn: '3525569-2', strn: '36304671934' },
+            '': { name: 'SHAH RUKN-E-ALAM', ntrn: '230123-2', strn: '3630270276253' },
+            '': { name: '711 DHA', ntrn: '4729545-0', strn: '32402-9637719-3' },
+            '': { name: 'COSMETIC', ntrn: '1730513-6', strn: '363029277068-1' },
+            '': { name: 'SUPER SWEET', ntrn: '0911371-4', strn: '911371' },
+            '': { name: 'GOLOO MART', ntrn: '', strn: '32102-4067623-7' },
+            '': { name: 'SHELL SELECT M3', ntrn: '8328602-3', strn: '' },
+            '': { name: 'DREAM MART', ntrn: '', strn: '36302-1872442-1' }
+        };
 
-            initApp(isAdmin);
-            loadFromSheet(true);
+        // ============================================================
+        // ALL 42 INITIAL DATA ENTRIES        // ============================================================
+
+        var initialData = [
+            { partyId: '22034', party: 'IDEAL SUPER MALL BOSAN ROAD', ntrn: '5527785-3', strn: '327787619200-4', inv: '125174', date: '2026-07-28', tax: 290, ex: 49425.18, sale: 57935 },
+            { partyId: '22038', party: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5', inv: '124684', date: '2026-07-04', tax: 2468, ex: 451927.3, sale: 493688 },
+            { partyId: '22038', party: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5', inv: '124735', date: '2026-07-07', tax: 280, ex: 5133.6, sale: 56047 },
+            { partyId: '22038', party: 'LATIF S/S GULGASHT', ntrn: '4302495-5', strn: '312016393391-5', inv: '125206', date: '2026-07-30', tax: 2103, ex: 389083.3, sale: 420539 },
+            { partyId: '22033', party: 'IDEAL MALL CHUNGI#6', ntrn: '7582544-8', strn: '327787614826-4', inv: '124923', date: '2026-07-14', tax: 254, ex: 45009.69, sale: 50833 },
+            { partyId: '23129', party: 'FRESHCO SWEETS & BAKERS BOSAN ROAD', ntrn: '', strn: '', inv: '125123', date: '2026-07-25', tax: 108, ex: 19950.08, sale: 21677 },
+            { partyId: '22369', party: 'TREND STORE GULGASHT', ntrn: '1309897-7', strn: '40013098971-9', inv: '124734', date: '2026-07-07', tax: 633, ex: 108200.1, sale: 126591 },
+            { partyId: '22110', party: 'FIYAZ MART BOSAN ROAD', ntrn: '1749512-1', strn: '327787618368-2', inv: '124924', date: '2026-07-14', tax: 93, ex: 15981.18, sale: 18549 },
+            { partyId: '22056', party: 'KK MART BOSAN ROAD', ntrn: '7197572-2', strn: '327787616144-3', inv: '124644', date: '2026-07-01', tax: 871, ex: 154341.3, sale: 174265 },
+            { partyId: '22056', party: 'KK MART BOSAN ROAD', ntrn: '7197572-2', strn: '327787616144-3', inv: '124926', date: '2026-07-14', tax: 94, ex: 16418.82, sale: 18803 },
+            { partyId: '22137', party: 'KK MART HUSSAIN AGHAI', ntrn: '7197572-2', strn: '327787616144-3', inv: '125107', date: '2026-07-23', tax: 488, ex: 86605.32, sale: 97506 },
+            { partyId: '23285', party: 'AL RAFFAY HYPER MART GULSHAN M', ntrn: '4648779', strn: '4648779-00', inv: '125205', date: '2026-07-30', tax: 263, ex: 48333.89, sale: 52581 },
+            { partyId: '23697', party: 'FOOD FESTIVAL KHANEWAL ROAD', ntrn: '1480015-2', strn: '327787624146-8', inv: '124708', date: '2026-07-05', tax: 262, ex: 44662.05, sale: 52314 },
+            { partyId: '22602', party: 'D MARINA BOSAN ROAD', ntrn: '9385097-5', strn: '938509-7', inv: '125088', date: '2026-07-22', tax: 144, ex: 25474.89, sale: 28854 },
+            { partyId: '22049', party: 'PRINCE D/S CANTT', ntrn: '', strn: '', inv: '125194', date: '2026-07-29', tax: 243, ex: 42227.76, sale: 48691 },
+            { partyId: '22154', party: 'PERFUME PALACE CANTT', ntrn: '0122268-6', strn: '363027610587-3', inv: '124953', date: '2026-07-15', tax: 204, ex: 35221.02, sale: 40770 },
+            { partyId: '22036', party: 'BAKHT MART MODEL TOWN', ntrn: '5124957-6', strn: '3277876172314', inv: '125067', date: '2026-07-21', tax: 547, ex: 94665.92, sale: 109365 },
+            { partyId: '22954', party: 'BEST ONE STORE BUCH VILLAS', ntrn: 'D188987-5', strn: 'D188987', inv: '125054', date: '2026-07-21', tax: 19, ex: 3233.46, sale: 3809 },
+            { partyId: '22031', party: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '3630206374537', inv: '124649', date: '2026-07-01', tax: 294, ex: 51272.25, sale: 58898 },
+            { partyId: '22031', party: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '3630206374537', inv: '124731', date: '2026-07-06', tax: 46, ex: 7986.69, sale: 9152 },
+            { partyId: '22031', party: 'JK MART OLD SHUJAABD ROAD', ntrn: '', strn: '', inv: '125090', date: '2026-07-22', tax: 25, ex: 4680.27, sale: 5093 },
+            { partyId: '22188', party: 'BEHRIA S/S QASIM BELA', ntrn: '3630279332553', strn: '79332553', inv: '125089', date: '2026-07-22', tax: 340, ex: 58547.12, sale: 68041 },
+            { partyId: '', party: '4 EVER BAKERS TARIQ ROAD', ntrn: '3525569-2', strn: '36304671934', inv: '124789', date: '2026-07-08', tax: 97, ex: 16773.24, sale: 19453 },
+            { partyId: '22341', party: 'TESCO MART TANK CHOWK', ntrn: '1826721-1', strn: '36302-2906795-0', inv: '124791', date: '2026-07-08', tax: 43, ex: 7441.85, sale: 8685 },
+            { partyId: '', party: 'SHAH RUKN-E-ALAM', ntrn: '230123-2', strn: '3630270276253', inv: '124983', date: '2026-07-16', tax: 150, ex: 27260.4, sale: 30059 },
+            { partyId: '', party: '711 DHA', ntrn: '4729545-0', strn: '32402-9637719-3', inv: '12068', date: '2026-07-21', tax: 178, ex: 30943.6, sale: 35606 },
+            { partyId: '22032', party: 'GIFT POINT SHAREEF PALAZA', ntrn: '', strn: '', inv: '124787', date: '2026-07-08', tax: 100, ex: 17070.9, sale: 20052 },
+            { partyId: '24931', party: 'ALL IN SUPER MART MPS CHOWK', ntrn: '', strn: '', inv: '124709', date: '2026-07-05', tax: 76, ex: 13025.25, sale: 15226 },
+            { partyId: '22368', party: 'GHAFOOR ARMY CANTT', ntrn: '4342726-0', strn: '400434272612', inv: '124646', date: '2026-07-01', tax: 47, ex: 8097.12, sale: 9483 },
+            { partyId: '25466', party: 'IDEAL MAGA MART MODEL TOWN', ntrn: '', strn: '', inv: '124922', date: '2026-07-14', tax: 152, ex: 26947.2, sale: 30479 },
+            { partyId: '25470', party: 'AL NOOR MART QASIM BILLA', ntrn: '', strn: '', inv: '124637', date: '2026-07-01', tax: 10, ex: 1773.08, sale: 2093 },
+            { partyId: '25470', party: 'AL NOOR MART QASIM BILLA', ntrn: '', strn: '', inv: '125070', date: '2026-07-22', tax: 18, ex: 3099.14, sale: 3583 },
+            { partyId: '25767', party: 'GALAXY CLINIC MART BOSAN ROAD', ntrn: '0150979-9', strn: '3277876193881', inv: '124737', date: '2026-07-07', tax: 10, ex: 1647.48, sale: 1928 },
+            { partyId: '', party: 'COSMETIC', ntrn: '1730513-6', strn: '363029277068-1', inv: '125052', date: '2026-07-21', tax: 12, ex: 1976.85, sale: 2386 },
+            { partyId: '25952', party: 'AUOR SUPER MARKET SP CHOWK', ntrn: '8353462-4', strn: '8353462', inv: '125172', date: '2026-07-28', tax: 1158, ex: 210695, sale: 231572 },
+            { partyId: '', party: 'SUPER SWEET', ntrn: '0911371-4', strn: '911371', inv: '125139', date: '2026-07-27', tax: 22, ex: 3650.68, sale: 4345 },
+            { partyId: '', party: 'GOLOO MART', ntrn: '', strn: '32102-4067623-7', inv: '124718', date: '2026-07-06', tax: 5, ex: 874.8, sale: 1036 },
+            { partyId: '', party: 'GOLOO MART', ntrn: '', strn: '32102-4067623-7', inv: '125247', date: '2026-07-20', tax: 3, ex: 483.84, sale: 572 },
+            { partyId: '', party: 'SHELL SELECT M3', ntrn: '8328602-3', strn: '', inv: '124830', date: '2026-07-11', tax: 5, ex: 874.8, sale: 1010 },
+            { partyId: '', party: 'SHELL SELECT M3', ntrn: '8328602-3', strn: '', inv: '124837', date: '2026-07-11', tax: 24, ex: 4133.3, sale: 4771 },
+            { partyId: '23809', party: 'MULTAN BACHAT BAZAR BAGH HUSSAIN CHOWK', ntrn: '', strn: '36302-1809429-3', inv: '125106', date: '2026-07-11', tax: 31, ex: 5347.78, sale: 6172 },
+            { partyId: '', party: 'DREAM MART', ntrn: '', strn: '36302-1872442-1', inv: '125192', date: '2026-07-29', tax: 101, ex: 16980.3, sale: 20139 }
+        ];
+
+        var STORAGE_KEY = 'kiwi_tax_invoice_july_2026_v4';
+        var PARTY_STORAGE_KEY = 'kiwi_party_database_v4';
+        var LOGIN_STORAGE_KEY = 'kiwi_tax_invoice_login_v1';
+
+        // Load saved entries if available; otherwise use the original 42 entries.
+        var fullData = loadSavedData();
+        var isAdmin = false;
+
+        function loadSavedData() {
+            try {
+                var saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    var parsed = JSON.parse(saved);
+                    if (Array.isArray(parsed)) return parsed;
+                }
+            } catch (e) {
+                console.warn('Saved data could not be loaded:', e);
+            }
+            return JSON.parse(JSON.stringify(initialData));
+        }
+
+        function saveData() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(fullData));
+                localStorage.setItem(PARTY_STORAGE_KEY, JSON.stringify(partyDatabase));
+            } catch (e) {
+                console.error('Data could not be saved to localStorage:', e);
+                alert('⚠️ Browser storage is blocked. Please allow site data/local storage for this HTML file in Chrome.');
+                return false;
+            }
+            // Push to Google Sheet so every device/user sees the same data.
+            saveToSheet();
+            // If the user has ALSO connected a local file, mirror the save there too.
+            writeToLocalFile();
+            return true;
+        }
+
+        // ============================================================
+        // LOCAL FILE SYNC (File System Access API)
+        // ------------------------------------------------------------
+        // Lets the user pick a real .json file on their own disk once.
+        // From then on, every add/delete writes straight to that file —
+        // no re-prompting, no manual export/import. Chrome/Edge only;
+        // other browsers silently fall back to localStorage-only mode.
+        // ============================================================
+
+        var localFileHandle = null;
+
+        function fileSyncSupported() {
+            return typeof window.showSaveFilePicker === 'function';
+        }
+
+        function updateFileSyncStatus(connected, label) {
+            var bar = document.getElementById('fileSyncStatus');
+            var text = document.getElementById('fileSyncText');
+            var btn = document.getElementById('connectFileBtn');
+            if (!bar || !text) return;
+
+            if (connected) {
+                bar.className = 'file-sync-status connected';
+                text.textContent = (label && label.indexOf('📊') === 0)
+                    ? label + ' — every change saves here automatically for everyone.'
+                    : '✅ Synced to local file: ' + (label || 'connected file') + ' — every change saves here automatically.';
+                if (btn) btn.textContent = '🔄 Change Local File (extra backup)';
+            } else {
+                bar.className = 'file-sync-status';
+                text.textContent = label || (fileSyncSupported()
+                    ? 'Not connected — data is saving to this browser only (localStorage). Click "Connect Local File" for an extra backup copy on your drive.'
+                    : 'Local file backup needs Chrome or Edge. Data is currently saving to this browser only (localStorage).');
+                if (btn) btn.textContent = '💾 Connect Local File (extra backup)';
+            }
+        }
+
+        async function connectLocalFile() {
+            if (!fileSyncSupported()) {
+                alert('⚠️ Your browser does not support direct file saving. Please use Chrome or Edge for this feature.\n\nYour data is still safe in this browser\'s local storage.');
+                return;
+            }
+            try {
+                localFileHandle = await window.showSaveFilePicker({
+                    suggestedName: 'kiwi_tax_invoice_backup.json',
+                    types: [{
+                        description: 'JSON File',
+                        accept: { 'application/json': ['.json'] }
+                    }]
+                });
+                var perm = await localFileHandle.requestPermission({ mode: 'readwrite' });
+                if (perm !== 'granted') {
+                    alert('⚠️ Permission was not granted, so local file sync is off.');
+                    localFileHandle = null;
+                    updateFileSyncStatus(false);
+                    return;
+                }
+                // Write current data immediately so the file is populated right away.
+                await writeToLocalFile();
+                updateFileSyncStatus(true, localFileHandle.name);
+            } catch (e) {
+                // User cancelled the picker — not an error worth alarming them about.
+                if (e && e.name !== 'AbortError') {
+                    console.error('Could not connect local file:', e);
+                }
+            }
+        }
+
+        async function writeToLocalFile() {
+            if (!localFileHandle) return;
+            try {
+                var payload = {
+                    savedAt: new Date().toISOString(),
+                    invoices: fullData,
+                    parties: partyDatabase
+                };
+                var writable = await localFileHandle.createWritable();
+                await writable.write(JSON.stringify(payload, null, 2));
+                await writable.close();
+            } catch (e) {
+                console.error('Could not write to local file:', e);
+                updateFileSyncStatus(false);
+                localFileHandle = null;
+                alert('⚠️ Lost access to the local file. Please click "Connect Local File" again.');
+            }
+        }
+
+        // ------------------------------------------------------------
+        // Universal backup download — works on every browser and OS,
+        // including Android/iOS where the File System Access API above
+        // is not available. Saves a single JSON snapshot to Downloads.
+        // ------------------------------------------------------------
+        function downloadBackup() {
+            var payload = {
+                savedAt: new Date().toISOString(),
+                invoices: fullData,
+                parties: partyDatabase
+            };
+            var blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            var stamp = new Date().toISOString().slice(0, 10);
+            a.href = url;
+            a.download = 'kiwi_tax_invoice_backup_' + stamp + '.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function saveLoginSession(role) {
+            try {
+                localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify({
+                    role: role,
+                    savedAt: new Date().getTime()
+                }));
+            } catch (e) {
+                console.warn('Login session could not be saved:', e);
+            }
+        }
+
+        function getLoginSession() {
+            try {
+                var saved = localStorage.getItem(LOGIN_STORAGE_KEY);
+                if (!saved) return null;
+                var session = JSON.parse(saved);
+                if (session && (session.role === 'admin' || session.role === 'user')) return session.role;
+            } catch (e) {
+                console.warn('Login session could not be loaded:', e);
+            }
+            return null;
+        }
+
+        function clearLoginSession() {
+            try {
+                localStorage.removeItem(LOGIN_STORAGE_KEY);
+            } catch (e) {
+                console.warn('Login session could not be cleared:', e);
+            }
+        }
+
+        // Merge previously saved party details into the built-in database.
+        try {
+            var savedParties = JSON.parse(localStorage.getItem(PARTY_STORAGE_KEY) || '{}');
+            if (savedParties && typeof savedParties === 'object') {
+                Object.keys(savedParties).forEach(function(id) {
+                    if (id) partyDatabase[id] = savedParties[id];
+                });
+            }
+        } catch (e) {
+            console.warn('Party database could not be loaded:', e);
         }
 
         // ============================================================
         // INIT APP
         // ============================================================
+
+        // ============================================================
+        // AUTO-UPDATING DATES (month badge + footer "report generated")
+        // ------------------------------------------------------------
+        // Both are computed fresh from the system clock every time the
+        // page loads/refreshes, so August, September, etc. take over
+        // automatically — nothing to edit by hand each month.
+        // ============================================================
+
+        var MONTH_NAMES = ['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE',
+            'JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+        var MONTH_NAMES_SHORT = ['Jan','Feb','Mar','Apr','May','Jun',
+            'Jul','Aug','Sep','Oct','Nov','Dec'];
+
+        function updateHeaderDates(today) {
+            today = today || new Date();
+
+            var badge = document.getElementById('monthBadge');
+            if (badge) {
+                badge.textContent = '📅 ' + MONTH_NAMES[today.getMonth()] + ' ' + today.getFullYear();
+            }
+
+            var genDate = document.getElementById('reportGeneratedDate');
+            if (genDate) {
+                genDate.textContent = today.getDate() + ' ' + MONTH_NAMES_SHORT[today.getMonth()] + ' ' + today.getFullYear();
+            }
+
+            var footerMonth = document.getElementById('footerMonthLabel');
+            if (footerMonth) {
+                var monthName = MONTH_NAMES[today.getMonth()];
+                var properCase = monthName.charAt(0) + monthName.slice(1).toLowerCase();
+                footerMonth.textContent = properCase + ' ' + today.getFullYear();
+            }
+        }
+
         function initApp(admin) {
             isAdmin = admin;
 
             var connectFileBtn = document.getElementById('connectFileBtn');
             if (connectFileBtn) connectFileBtn.onclick = connectLocalFile;
-
             var downloadBackupBtn = document.getElementById('downloadBackupBtn');
             if (downloadBackupBtn) downloadBackupBtn.onclick = downloadBackup;
+            updateFileSyncStatus(!!localFileHandle, localFileHandle ? localFileHandle.name : null);
 
             var tbody = document.getElementById('invoiceTableBody');
             var searchInput = document.getElementById('partySearch');
@@ -1306,40 +1434,23 @@
             var autoHint = document.getElementById('autoHint');
             var idHint = document.getElementById('idHint');
 
-            // Set today's date for new entry
-            var today = new Date();
-            var yyyy = today.getFullYear();
-            var mm = String(today.getMonth() + 1).padStart(2, '0');
-            var dd = String(today.getDate()).padStart(2, '0');
-            newDate.value = yyyy + '-' + mm + '-' + dd;
+            function formatNumber(n) {
+                return n.toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
+            }
 
-            // Set date range to current month
-            var lastDay = new Date(yyyy, today.getMonth() + 1, 0).getDate();
-            dateFrom.value = yyyy + '-' + mm + '-01';
-            dateTo.value = yyyy + '-' + mm + '-' + String(lastDay).padStart(2, '0');
+            function formatCurrency(n) {
+                return n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+            }
 
-            // Update header dates
-            updateHeaderDates(today);
-
-            function updateHeaderDates(d) {
-                var months = ['JANUARY', 'FEBRUARY', 'MARCH', 'APRIL', 'MAY', 'JUNE',
-                    'JULY', 'AUGUST', 'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
-                ];
-                var monthsShort = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
-                    'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
-                ];
-
-                var badge = document.getElementById('monthBadge');
-                if (badge) badge.textContent = '📅 ' + months[d.getMonth()] + ' ' + d.getFullYear();
-
-                var genDate = document.getElementById('reportGeneratedDate');
-                if (genDate) genDate.textContent = d.getDate() + ' ' + monthsShort[d.getMonth()] + ' ' + d.getFullYear();
-
-                var footerMonth = document.getElementById('footerMonthLabel');
-                if (footerMonth) {
-                    var monthName = months[d.getMonth()];
-                    footerMonth.textContent = monthName.charAt(0) + monthName.slice(1).toLowerCase() + ' ' + d.getFullYear();
-                }
+            function computeTotals(data) {
+                var inv = data.length;
+                var tax = 0, ex = 0, sale = 0;
+                data.forEach(function(r) {
+                    tax += r.tax;
+                    ex += r.ex;
+                    sale += r.sale;
+                });
+                return { inv: inv, tax: tax, ex: ex, sale: sale };
             }
 
             function findPartyByPartyId(partyId) {
@@ -1348,23 +1459,13 @@
                 return partyDatabase[trimmed] || null;
             }
 
-            function setPartyFieldsEditable(editable) {
-                newParty.readOnly = !editable;
-                newNtrn.readOnly = !editable;
-                newStrn.readOnly = !editable;
-                if (editable) {
-                    newParty.classList.remove('readonly-field');
-                    newNtrn.classList.remove('readonly-field');
-                    newStrn.classList.remove('readonly-field');
-                } else if (!isAdmin) {
-                    newParty.classList.add('readonly-field');
-                    newNtrn.classList.add('readonly-field');
-                    newStrn.classList.add('readonly-field');
-                }
-            }
-
             function handlePartyIdAutoFill() {
                 var idVal = newPartyId.value.trim();
+
+                // Reset styling first.
+                newParty.classList.remove('auto-filled');
+                newNtrn.classList.remove('auto-filled');
+                newStrn.classList.remove('auto-filled');
 
                 if (!idVal) {
                     idHint.textContent = '';
@@ -1385,25 +1486,75 @@
                     idHint.style.color = '#0f7b3e';
                     autoHint.textContent = '✅ Auto-filled';
                     autoHint.style.color = '#0f7b3e';
+                    newParty.classList.add('auto-filled');
+                    newNtrn.classList.add('auto-filled');
+                    newStrn.classList.add('auto-filled');
+
+                    // Known party: keep user-mode master data protected.
                     setPartyFieldsEditable(isAdmin);
                 } else {
                     idHint.textContent = '➕ New Party ID — enter party details below';
                     idHint.style.color = '#0b2b3f';
                     autoHint.textContent = '✏️ New party: Name / NTRN / STRN can be entered';
                     autoHint.style.color = '#0b2b3f';
+
+                    // IMPORTANT: unknown/new parties must be editable for BOTH roles.
                     setPartyFieldsEditable(true);
                 }
             }
 
-            function computeTotals(data) {
-                var inv = data.length;
-                var tax = 0, ex = 0, sale = 0;
-                data.forEach(function(r) {
-                    tax += r.tax || 0;
-                    ex += r.ex || 0;
-                    sale += r.sale || 0;
-                });
-                return { inv: inv, tax: tax, ex: ex, sale: sale };
+            function setPartyFieldsEditable(editable) {
+                newParty.readOnly = !editable;
+                newNtrn.readOnly = !editable;
+                newStrn.readOnly = !editable;
+                if (editable) {
+                    newParty.classList.remove('readonly-field');
+                    newNtrn.classList.remove('readonly-field');
+                    newStrn.classList.remove('readonly-field');
+                } else if (!isAdmin) {
+                    newParty.classList.add('readonly-field');
+                    newNtrn.classList.add('readonly-field');
+                    newStrn.classList.add('readonly-field');
+                }
+            }
+
+            function applyFilters() {
+                var filtered = fullData.slice();
+                
+                var fromDate = dateFrom.value;
+                var toDate = dateTo.value;
+                
+                if (fromDate && toDate) {
+                    filtered = filtered.filter(function(row) { return row.date >= fromDate && row.date <= toDate; });
+                } else if (fromDate) {
+                    filtered = filtered.filter(function(row) { return row.date >= fromDate; });
+                } else if (toDate) {
+                    filtered = filtered.filter(function(row) { return row.date <= toDate; });
+                }
+                
+                var searchTerm = searchInput.value.trim().toUpperCase();
+                if (searchTerm) {
+                    filtered = filtered.filter(function(row) {
+                        return row.party.toUpperCase().includes(searchTerm) || 
+                            (row.partyId && row.partyId.includes(searchTerm));
+                    });
+                }
+                
+                renderTable(filtered);
+                updateSummary(filtered);
+                
+                if (fromDate || toDate) {
+                    dateFilterCount.textContent = '📅 ' + filtered.length + ' entries in range';
+                } else {
+                    dateFilterCount.textContent = '';
+                }
+            }
+
+            function clearDateFilter() {
+                dateFrom.value = '';
+                dateTo.value = '';
+                dateFilterCount.textContent = '';
+                applyFilters();
             }
 
             function renderTable(data) {
@@ -1413,17 +1564,17 @@
                 }
 
                 var html = '';
-                data.forEach(function(row, idx) {
+                data.forEach(function(row) {
                     var dateFormatted = row.date ? row.date.replace(/-/g, '/') : '—';
                     var dataIndex = fullData.findIndex(function(d) {
                         return d.party === row.party && d.inv === row.inv && d.date === row.date;
                     });
-                    var deleteIdx = dataIndex !== -1 ? dataIndex : idx;
-
-                    var deleteButton = isAdmin ?
-                        '<button class="btn-danger-small" onclick="deleteEntry(' + deleteIdx + ')">Delete</button>' :
-                        '<button class="btn-danger-small disabled" onclick="alert(\'⚠️ User cannot delete\')">Delete</button>';
-
+                    var deleteIdx = dataIndex !== -1 ? dataIndex : 0;
+                    
+                    var deleteButton = isAdmin 
+                        ? '<button class="btn-danger-small" onclick="deleteEntry(' + deleteIdx + ')">Delete</button>'
+                        : '<button class="btn-danger-small disabled" onclick="alert(\'⚠️ User cannot delete\')">Delete</button>';
+                    
                     html += '<tr>' +
                         '<td>' + (row.partyId || '—') + '</td>' +
                         '<td class="party-name">' + row.party + '</td>' +
@@ -1468,7 +1619,7 @@
                     alert('⚠️ User cannot reset data.');
                     return;
                 }
-                if (confirm('Reset all data to original 42 invoices?')) {
+                if (confirm('Reset all data?')) {
                     fullData = JSON.parse(JSON.stringify(initialData));
                     localStorage.removeItem(STORAGE_KEY);
                     searchInput.value = '';
@@ -1483,47 +1634,7 @@
                     newSale.value = '';
                     autoHint.textContent = '';
                     idHint.textContent = '';
-                    saveData();
                     applyFilters();
-                }
-            }
-
-            function clearDateFilter() {
-                dateFrom.value = '';
-                dateTo.value = '';
-                dateFilterCount.textContent = '';
-                applyFilters();
-            }
-
-            function applyFilters() {
-                var filtered = fullData.slice();
-
-                var fromDate = dateFrom.value;
-                var toDate = dateTo.value;
-
-                if (fromDate && toDate) {
-                    filtered = filtered.filter(function(row) { return row.date >= fromDate && row.date <= toDate; });
-                } else if (fromDate) {
-                    filtered = filtered.filter(function(row) { return row.date >= fromDate; });
-                } else if (toDate) {
-                    filtered = filtered.filter(function(row) { return row.date <= toDate; });
-                }
-
-                var searchTerm = searchInput.value.trim().toUpperCase();
-                if (searchTerm) {
-                    filtered = filtered.filter(function(row) {
-                        return row.party.toUpperCase().includes(searchTerm) || 
-                            (row.partyId && row.partyId.includes(searchTerm));
-                    });
-                }
-
-                renderTable(filtered);
-                updateSummary(filtered);
-
-                if (fromDate || toDate) {
-                    dateFilterCount.textContent = '📅 ' + filtered.length + ' entries in range';
-                } else {
-                    dateFilterCount.textContent = '';
                 }
             }
 
@@ -1543,12 +1654,14 @@
                     return;
                 }
 
-                // Check for duplicate invoice
+                // Strong duplicate invoice protection.
                 var duplicate = fullData.find(function(r) {
                     return String(r.inv).trim().toUpperCase() === inv.toUpperCase();
                 });
                 if (duplicate) {
-                    alert('⚠️ Invoice # ' + inv + ' already exists for ' + duplicate.party);
+                    alert('⚠️ THESE INVOICE ALREADY EXIST!\n\nInvoice #: ' + inv +
+                          '\nParty: ' + duplicate.party +
+                          '\nDate: ' + (duplicate.date || '—'));
                     newInv.focus();
                     return;
                 }
@@ -1567,19 +1680,29 @@
 
                 fullData.push(newRecord);
 
-                // Register new party if not exists
-                if (!partyDatabase[partyId]) {
-                    partyDatabase[partyId] = { name: party, ntrn: ntrn, strn: strn };
-                }
-
+                // Register a new party automatically so the next invoice auto-fills it.
+                partyDatabase[partyId] = {
+                    name: party,
+                    ntrn: ntrn,
+                    strn: strn
+                };
                 saveData();
 
-                // Clear form
+                // Make the newly-added entry immediately visible.
+                searchInput.value = '';
+                if (dateFrom.value && dateTo.value &&
+                    (date < dateFrom.value || date > dateTo.value)) {
+                    dateFrom.value = '';
+                    dateTo.value = '';
+                    dateFilterCount.textContent = '';
+                }
+
                 newPartyId.value = '';
                 newParty.value = '';
                 newNtrn.value = '';
                 newStrn.value = '';
                 newInv.value = '';
+                newDate.value = '';
                 newTax.value = '';
                 newEx.value = '';
                 newSale.value = '';
@@ -1590,11 +1713,24 @@
                 applyFilters();
             }
 
-            // Event Listeners
-            newPartyId.oninput = handlePartyIdAutoFill;
+            var today = new Date();
+            var yyyy = today.getFullYear();
+            var mm = String(today.getMonth() + 1).padStart(2, '0');
+            var dd = String(today.getDate()).padStart(2, '0');
+            newDate.value = yyyy + '-' + mm + '-' + dd;
+
+            // Auto-set the date range filter to the CURRENT month, every time
+            // the page is opened/refreshed — no more hardcoded "July 2026".
+            var lastDay = new Date(yyyy, today.getMonth() + 1, 0).getDate();
+            dateFrom.value = yyyy + '-' + mm + '-01';
+            dateTo.value = yyyy + '-' + mm + '-' + String(lastDay).padStart(2, '0');
+
+            updateHeaderDates(today);
+
             addBtn.onclick = addEntry;
             if (resetBtn) resetBtn.onclick = resetData;
-
+            newPartyId.oninput = handlePartyIdAutoFill;
+            
             searchBtn.onclick = applyFilters;
             searchInput.onkeydown = function(e) {
                 if (e.key === 'Enter') applyFilters();
@@ -1603,10 +1739,10 @@
                 searchInput.value = '';
                 applyFilters();
             };
-
+            
             applyDateFilter.onclick = applyFilters;
             clearDateFilterBtn.onclick = clearDateFilter;
-
+            
             dateFrom.onkeydown = function(e) {
                 if (e.key === 'Enter') applyFilters();
             };
@@ -1614,32 +1750,40 @@
                 if (e.key === 'Enter') applyFilters();
             };
 
-            // Initial render
             applyFilters();
         }
 
-        // ============================================================
-        // EVENT BINDINGS FOR LOGIN
-        // ============================================================
-        document.getElementById('adminLoginBtn').onclick = function() { attemptLogin('admin'); };
-        document.getElementById('userLoginBtn').onclick = function() { attemptLogin('user'); };
+        // Extra safety net: if this tab was left open and another tab/session
+        // saved new data in the meantime, refresh + re-render as soon as the
+        // user switches back to this tab — so it's never showing stale counts.
+        document.addEventListener('visibilitychange', function() {
+            if (document.visibilityState !== 'visible') return;
+            var container = document.getElementById('mainContainer');
+            if (!container || container.className.indexOf('hidden') !== -1) return;
+            refreshDataFromStorage();
+            initApp(isAdmin);
+        });
 
-        document.getElementById('loginPass').onkeydown = function(e) {
-            if (e.key === 'Enter') {
-                attemptLogin('admin');
+        function doLogout() {
+            if (confirm('Logout?')) {
+                clearLoginSession();
+                document.getElementById('mainContainer').className = 'container hidden';
+                document.getElementById('loginOverlay').className = 'login-overlay';
+                document.getElementById('loginUser').value = '';
+                document.getElementById('loginPass').value = '';
+                document.getElementById('loginError').textContent = '';
+                document.getElementById('appContent').innerHTML = '';
+                document.getElementById('loginUser').focus();
             }
-        };
-
-        document.getElementById('loginUser').onkeydown = function(e) {
-            if (e.key === 'Enter') {
-                document.getElementById('loginPass').focus();
-            }
-        };
+        }
 
         // ============================================================
-        // PERSISTENT LOGIN (restore after refresh)
+        // STARTUP / PERSISTENT LOGIN
         // ============================================================
-        (function restoreLogin() {
+        // If the user was already logged in, restore the app after refresh.
+        // This is intentionally stored in localStorage so the single HTML
+        // file works without PHP/MySQL/server-side login.
+        (function restoreLoginAfterRefresh() {
             var savedRole = getLoginSession();
             if (savedRole) {
                 showApp(savedRole);
@@ -1649,33 +1793,18 @@
         })();
 
         // ============================================================
-        // REFRESH DATA WHEN TAB BECOMES VISIBLE
+        // Start cloud sync: load the latest data from the Google Sheet
+        // right away, then re-check every 15 seconds so entries added
+        // on other devices/browsers show up here too.
         // ============================================================
-        document.addEventListener('visibilitychange', function() {
-            if (document.visibilityState !== 'visible') return;
-            var container = document.getElementById('mainContainer');
-            if (!container || container.className.indexOf('hidden') !== -1) return;
-            fullData = loadSavedData();
-            if (SHEET_API_URL && SHEET_API_URL.length > 0) {
-                loadFromSheet(false);
-            } else {
-                applyFilters();
-            }
-        });
-
-        // ============================================================
-        // PERIODIC SYNC (every 15 seconds)
-        // ============================================================
-        setInterval(function() {
-            if (SHEET_API_URL && SHEET_API_URL.length > 0) {
-                loadFromSheet(false);
-            }
-        }, 15000);
+        loadFromSheet(true);
+        setInterval(function () { loadFromSheet(false); }, 15000);
 
         console.log('✅ KIWI Tax Invoice System Ready!');
-        console.log('📋 Total Invoices: ' + initialData.length);
-        console.log('📋 Login: admin/admin123 or user/user123');
-        console.log('📋 Google Sheet URL: ' + SHEET_API_URL);
+        console.log('📋 Original records: ' + initialData.length);
+        console.log('📋 Login Credentials:');
+        console.log('  👑 Admin: admin / admin123');
+        console.log('  👤 User:  user / user123');
     </script>
 </body>
 </html>
